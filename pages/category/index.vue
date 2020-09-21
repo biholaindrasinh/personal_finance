@@ -43,6 +43,7 @@
 <script>
     import CategoryList from "~/components/category/CategoryList"
   export default {
+    middleware: 'auth',
     data: () => ({
       dialog: false,
       dialog1:false,

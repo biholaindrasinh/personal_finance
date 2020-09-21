@@ -46,22 +46,20 @@ export default {
       password: ""
     };
   },
-  mounted() {
-    this.$axios.$get("/sanctum/csrf-cookie");
-  },
   methods: {
-    async login() {
-      this.error = {};
-      try {
-        const formData = new FormData(this.$refs.loginform);
-        await this.$auth.loginWith("local", { data: formData });
-        this.$router.push({
-          path: "/"
-        });
-      } catch (err) {
-        this.error = err;
-      }
-    }
+      async login() {
+        this.error = {};
+        try {
+          const formData = new FormData(this.$refs.loginform);
+          await this.$auth.loginWith('local', { 
+            data: formData 
+          });
+          this.$router.push("/dashboard");
+        } catch (err) {
+          this.error = err;
+         
+        }
+      },
   }
 };
 </script>

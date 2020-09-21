@@ -141,6 +141,7 @@
 </template>
 <script>
 export default {
+  middleware: 'auth',
   data: () => ({
     expense: 0,
     income: 0,

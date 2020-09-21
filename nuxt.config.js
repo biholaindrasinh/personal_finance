@@ -57,27 +57,25 @@ export default {
     '@nuxtjs/auth'
   ],
   axios: {
-    baseURL: "http://localhost:8000",
-    credentials: true
+    baseURL: "http://127.0.0.1:8000/api"
   },
   auth: {
-    redirect: {
-      login: '/login',
-      logout: '/',
-      callback: '/login',
-      home: '/'
-    },
-    strategies: {
-      local: {
-        endpoints: {
-          login: { url: '/api/login', method: 'post', propertyName: false },
-          user: { url: '/api/user', method: 'get', propertyName: false }
-        },
-        tokenRequired: false,
-        tokenType: false
-      }
-    },
-    localStorage: false
+      strategies: {
+          local: {
+            endpoints: {
+              login: { url: '/auth/login', method: 'post', propertyName: 'access_token' },
+              logout: false,
+              user: { url: '/auth/user', method: 'get', propertyName: 'user' },
+            },
+            tokenRequired: true,
+            tokenType: 'Bearer'
+          }
+      },
+      redirect: {
+        login: '/',
+        logout: '/',
+        home: '/dashboard'
+      },
   },
   /*
   ** vuetify module configuration
