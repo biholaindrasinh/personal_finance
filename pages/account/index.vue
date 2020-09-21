@@ -57,7 +57,7 @@ export default {
   methods: {
     onSave() {
       this.$axios
-        .$post("http://api.panimtechnology.com/api/accounts", {
+        .$post("/api/accounts", {
           name: this.name
         })
         .then(response => this.getData());
@@ -66,7 +66,7 @@ export default {
     },
     deletedata(e) {
       this.$axios
-        .$delete("http://api.panimtechnology.com/api/accounts/" + e)
+        .$delete("/api/accounts/" + e)
         .then(response => this.$store.dispatch("loadAccounts"));
     }
   },

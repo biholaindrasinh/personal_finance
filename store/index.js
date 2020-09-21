@@ -21,19 +21,19 @@ const createStore = () => {
     actions: {
       async loadAccounts({ commit }) {
         const accounts = await this.$axios.$get(
-          "http://api.panimtechnology.com/api/accounts"
+          "/accounts"
         );
         commit("setAccounts", accounts);
       },
       async loadCategories({ commit }) {
         const categories = await this.$axios.$get(
-          "http://api.panimtechnology.com/api/categories"
+          "/categories"
         );
         commit("setCategories", categories);
       },
       async loadTransactions({ commit }) {
         const transactions = await this.$axios.$get(
-          "http://api.panimtechnology.com/api/transactions"
+          "/transactions"
         );
         commit("setTransactions", transactions);
       }

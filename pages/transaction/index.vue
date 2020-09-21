@@ -85,7 +85,6 @@
                 <th class="text-left">Amount</th>
                 <th class="text-left">Action</th>
               </tr>
-              <p>Name: {{ this.$auth.user }}</p>
             </thead>
             <tbody>
               <tr
@@ -159,7 +158,7 @@ export default {
   methods: {
     deletedata(e) {
       this.$axios
-        .$delete("http://api.panimtechnology.com/api/transactions/" + e)
+        .$delete("/transactions/" + e)
         .then(response => this.$store.dispatch("loadTransactions"));
     },
     total_income() {

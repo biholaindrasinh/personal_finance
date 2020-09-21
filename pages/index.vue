@@ -1,6 +1,6 @@
 <template>
   <v-card class="mx-auto" max-width="400">
-    <form ref="loginform" @submit.prevent="login()">
+    <form>
       <v-card-title>
         <span class="headline"></span>
       </v-card-title>
@@ -10,8 +10,7 @@
             <v-col cols="12" sm="12" md="12">
               <v-text-field
                 label="name*"
-                name="email"
-                v-model="email"
+                v-model="credentials.email"
                 type="email"
                 required
               ></v-text-field>
@@ -19,8 +18,7 @@
             <v-col cols="12" sm="12" md="12">
               <v-text-field
                 label="password*"
-                name="password"
-                v-model="password"
+                v-model="credentials.password"
                 type="password"
                 required
               ></v-text-field>
@@ -30,7 +28,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text type="submit">Save</v-btn>
+        <v-btn color="blue darken-1" text @click="login()">Save</v-btn>
       </v-card-actions>
     </form>
   </v-card>
@@ -38,28 +36,28 @@
 
 <script>
 export default {
-  layout:'basic',
+  layout: "basic",
   data() {
     return {
       error: {},
-      email: "",
-      password: ""
+      credentials: {
+        email: "",
+        password: ""
+      }
     };
   },
   methods: {
-      async login() {
-        this.error = {};
-        try {
-          const formData = new FormData(this.$refs.loginform);
-          await this.$auth.loginWith('local', { 
-            data: formData 
-          });
-          this.$router.push("/dashboard");
-        } catch (err) {
-          this.error = err;
-         
-        }
-      },
+    async login() {
+      this.error = {};
+      try {
+        await this.$auth.loginWith("local", {
+          data: this.credentials
+        });
+        this.$router.push("/dashboard");
+      } catch (err) {
+        this.error = err;
+      }
+    }
   }
 };
 </script>
