@@ -35,7 +35,7 @@
       methods: {
         onSave() {
           
-            this.$axios.$post('http://api.panimtechnology.com/api/accounts', {
+            this.$axios.$post('/accounts', {
               name: this.accounts.name
             })
             .then(response => (  this.$router.push('/account') ))

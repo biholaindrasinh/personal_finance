@@ -50,6 +50,7 @@
 </template>
 <script>
   export default {
+    middleware: 'auth',
     data: () => ({
       name: '',
       amount: '',   
@@ -65,11 +66,11 @@
 
     methods: {
        getcategory() {
-             this.$axios.$get('http://api.panimtechnology.com/api/categories/transaction/expense')
+             this.$axios.$get('/categories/transaction/expense')
                 .then(response => (this.categories = response))
         }, 
        onSave() {
-         this.$axios.$post('http://api.panimtechnology.com/api/transactions', {
+         this.$axios.$post('/transactions', {
                 name: this.name,
                 date: this.date,
                 amount: this.amount,
@@ -81,7 +82,7 @@
         },
         
         fetchAccount() {
-          this.$axios.$get('http://api.panimtechnology.com/api/accounts')
+          this.$axios.$get('/accounts')
                 .then(response => (this.accounts = response))
         }
     },

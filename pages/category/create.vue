@@ -30,6 +30,7 @@
 <script>
    
   export default {
+    middleware: 'auth',
     data: () => ({
       name: '',
       income_expense: null,
@@ -46,7 +47,7 @@
     }),
       methods: {
       onSave() {
-            this.$axios.$post('http://api.panimtechnology.com/api/categories', {
+            this.$axios.$post('/categories', {
               name: this.name,
               type: this.income_expense,
             }).then(response => ( this.$router.push('/category') )) 

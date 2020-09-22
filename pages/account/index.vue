@@ -57,7 +57,7 @@ export default {
   methods: {
     onSave() {
       this.$axios
-        .$post("/api/accounts", {
+        .$post("/accounts", {
           name: this.name
         })
         .then(response => this.getData());
@@ -66,7 +66,7 @@ export default {
     },
     deletedata(e) {
       this.$axios
-        .$delete("/api/accounts/" + e)
+        .$delete("/accounts/" + e)
         .then(response => this.$store.dispatch("loadAccounts"));
     }
   },

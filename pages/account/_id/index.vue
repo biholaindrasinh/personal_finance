@@ -29,20 +29,21 @@
 <script>
    
   export default {
+    middleware: 'auth',
     data: () => ({
       accounts:[],
     }),
       methods: {
         onSave() {
           
-            this.$axios.$put('http://api.panimtechnology.com/api/accounts/'+this.$route.params.id, {
+            this.$axios.$put('/accounts/'+this.$route.params.id, {
               name: this.accounts.name
             })
             .then(response => (  this.$router.push('/account') ))
            
         },
         getData() {
-            this.$axios.$get('http://api.panimtechnology.com/api/accounts/'+this.$route.params.id)
+            this.$axios.$get('/accounts/'+this.$route.params.id)
                 .then(response => (this.accounts = response))  
         }
     },

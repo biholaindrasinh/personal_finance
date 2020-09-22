@@ -60,13 +60,13 @@
     },
     methods: {
         deletedata(e) {
-           this.$axios.$delete('http://api.panimtechnology.com/api/categories/'+e)
+           this.$axios.$delete('/categories/'+e)
            .then(response => ( this.$store.dispatch('loadCategories') ))
         },
 
 
         getData() {
-            this.$axios.$get('http://api.panimtechnology.com/api/categories')
+            this.$axios.$get('/categories')
                 .then(response => (this.categories = response))  
         }
     },

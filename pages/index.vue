@@ -1,15 +1,15 @@
 <template>
   <v-card class="mx-auto" max-width="400">
     <form>
-      <v-card-title>
-        <span class="headline"></span>
+     <v-card-title>
+          <span class="headline">Login</span>
       </v-card-title>
       <v-card-text>
         <v-container>
           <v-row>
             <v-col cols="12" sm="12" md="12">
               <v-text-field
-                label="name*"
+                label="email*"
                 v-model="credentials.email"
                 type="email"
                 required
@@ -27,6 +27,7 @@
         </v-container>
       </v-card-text>
       <v-card-actions>
+        <v-btn to="/register" color="blue darken-1" text> Registration </v-btn>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="login()">Save</v-btn>
       </v-card-actions>

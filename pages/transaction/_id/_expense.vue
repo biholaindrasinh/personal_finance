@@ -50,6 +50,7 @@
 </template>
 <script>
   export default {
+     middleware: 'auth',
     data: () => ({
       name: '',
       amount: '',   
@@ -67,12 +68,12 @@
 
    methods: {
         onChange(event) {
-             this.$axios.$get('http://api.panimtechnology.com/api/categories/transaction/expense')
+             this.$axios.$get('/categories/transaction/expense')
                 .then(response => (this.categories = response))
         }, 
         onSave() {
           
-            this.$axios.$put('http://api.panimtechnology.com/api/transactions/'+this.$route.params.expense, {
+            this.$axios.$put('/transactions/'+this.$route.params.expense, {
               name: this.transactions.name,
               date: this.transactions.date,
               amount: this.transactions.amount,
@@ -85,7 +86,7 @@
            
         },
         getData() {
-            this.$axios.$get('http://api.panimtechnology.com/api/transactions/'+this.$route.params.expense)
+            this.$axios.$get('/transactions/'+this.$route.params.expense)
                 .then(response => {
                     this.transactions = response;
                     
@@ -96,11 +97,11 @@
 
         },
         fetchCategory() {
-          this.$axios.$get('http://api.panimtechnology.com/api/categories/transaction/expense')
+          this.$axios.$get('/categories/transaction/expense')
                 .then(response => (this.categories = response))
         },
         fetchAccount() {
-          this.$axios.$get('http://api.panimtechnology.com/api/accounts')
+          this.$axios.$get('/accounts')
                 .then(response => (this.accounts = response))
         }
     },

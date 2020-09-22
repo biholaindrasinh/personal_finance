@@ -29,6 +29,7 @@
 <script>
    
   export default {
+    middleware: 'auth',
     data: () => ({
       dialog: false,
       dialog1:false,
@@ -49,7 +50,7 @@
       methods: {
         onSave() {
           
-            this.$axios.$put('http://api.panimtechnology.com/api/categories/'+this.$route.params.id, {
+            this.$axios.$put('/categories/'+this.$route.params.id, {
               name: this.categories.name,
               type: this.categories.type,
             })
@@ -57,7 +58,7 @@
         },
     },
     async asyncData({ $axios,params }) {
-      const categories = await $axios.$get('http://api.panimtechnology.com/api/categories/'+params.id)
+      const categories = await $axios.$get('/categories/'+params.id)
       return { categories }
     }
   }

@@ -35,6 +35,7 @@
 
 <script>
   export default {
+    layout: "basic",
     data() {
       return {
         error: {},
@@ -53,8 +54,7 @@
                         name: this.name,
                         email: this.email,
                         password: this.password 
-            })
-            
+            }).then(response => this.$router.push("/"));
       },
     },
   };
