@@ -6,15 +6,20 @@
           <v-list-item-content>
             <v-list-item-title class="headline">Income</v-list-item-title>
           </v-list-item-content>
+          <v-list-item-action>
+            <v-btn to="transaction/createincome" color="warning" dark>
+              Add Income
+            </v-btn>
+          </v-list-item-action>
         </v-list-item>
 
         <v-card-text>
           <v-simple-table dense>
             <thead>
               <tr>
-                <th class="text-left">Title</th>
                 <th class="text-left">Date</th>
                 <th class="text-left">Category</th>
+                <th class="text-left">Description</th>
                 <th class="text-left">Amount</th>
                 <th class="text-left">Action</th>
               </tr>
@@ -25,9 +30,9 @@
                 v-show="transaction.transaction_type == 'income'"
                 :key="transaction.id"
               >
-                <td>{{ transaction.name }}</td>
                 <td>{{ transaction.date }}</td>
                 <td>{{ transaction.category.name }}</td>
+                <td>{{ transaction.name }}</td>
                 <td>{{ transaction.amount }}</td>
                 <td style="white-space: nowrap">
                   <v-btn
@@ -56,11 +61,6 @@
           </v-simple-table>
         </v-card-text>
         <hr />
-        <v-card-actions class="justify-center">
-          <v-btn to="transaction/createincome" color="warning" dark>
-            Add Income
-          </v-btn>
-        </v-card-actions>
         <v-card-actions>
           <v-spacer></v-spacer>
           <p class="text-lg-right text-xs-right">Total Income: {{ income }}</p>
@@ -73,15 +73,20 @@
           <v-list-item-content>
             <v-list-item-title class="headline">Expense</v-list-item-title>
           </v-list-item-content>
+          <v-list-item-action>
+            <v-btn to="transaction/createexpense" color="warning" dark>
+              Add Expense
+            </v-btn>
+          </v-list-item-action>
         </v-list-item>
 
         <v-card-text>
           <v-simple-table dense>
             <thead>
               <tr>
-                <th class="text-left">Title</th>
                 <th class="text-left">Date</th>
                 <th class="text-left">Category</th>
+                <th class="text-left">Description</th>
                 <th class="text-left">Amount</th>
                 <th class="text-left">Action</th>
               </tr>
@@ -92,9 +97,9 @@
                 v-show="transaction.transaction_type == 'expense'"
                 :key="transaction.id"
               >
-                <td>{{ transaction.name }}</td>
                 <td>{{ transaction.date }}</td>
                 <td>{{ transaction.category.name }}</td>
+                <td>{{ transaction.name }}</td>
                 <td>{{ transaction.amount }}</td>
                 <td style="white-space: nowrap">
                   <v-btn
@@ -123,11 +128,6 @@
           </v-simple-table>
         </v-card-text>
         <hr />
-        <v-card-actions class="justify-center">
-          <v-btn to="transaction/createexpense" color="warning" dark>
-            Add Expense
-          </v-btn>
-        </v-card-actions>
         <v-card-actions>
           <v-spacer></v-spacer>
           <p class="text-lg-right text-xs-right">
@@ -140,7 +140,7 @@
 </template>
 <script>
 export default {
-  middleware: 'auth',
+  middleware: "auth",
   data: () => ({
     expense: 0,
     income: 0,

@@ -57,7 +57,7 @@ export default {
     '@nuxtjs/auth'
   ],
   axios: {
-    baseURL: "http://api.panimtechnology.com/api"
+    baseURL: "http://localhost:8000/api"
   },
   auth: {
       strategies: {

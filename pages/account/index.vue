@@ -1,12 +1,12 @@
 <template>
   <v-card class="mx-auto" max-width="800">
-    <v-list-item two-line>
+    <v-list-item>
       <v-list-item-content>
         <v-list-item-title class="headline">Account</v-list-item-title>
-        <div class="my-2">
-          <v-btn to="account/create" color="warning" dark> Add Account </v-btn>
-        </div>
       </v-list-item-content>
+      <v-list-item-action>
+        <v-btn to="account/create" color="warning" dark> Add Account </v-btn>
+      </v-list-item-action>
     </v-list-item>
 
     <v-card-text>
@@ -44,7 +44,7 @@
 </template>
 <script>
 export default {
-  middleware: 'auth',
+  middleware: "auth",
   data: () => ({
     dialog: false,
     name: ""
