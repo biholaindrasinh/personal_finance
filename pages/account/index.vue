@@ -22,6 +22,7 @@
             <td>{{ account.name }}</td>
             <td>
               <v-btn
+			  	small
                 class="ma-2"
                 outlined
                 color="indigo"
@@ -29,10 +30,11 @@
                 >Edit</v-btn
               >
               <v-btn
+			  	small
                 class="ma-2"
                 outlined
                 color="indigo"
-                @click="deletedata(account.id)"
+                @click="deleteAccount(account.id)"
                 >Delete</v-btn
               >
             </td>
@@ -55,16 +57,7 @@ export default {
     }
   },
   methods: {
-    onSave() {
-      this.$axios
-        .$post("/accounts", {
-          name: this.name
-        })
-        .then(response => this.getData());
-      this.dialog = false;
-      this.name = "";
-    },
-    deletedata(e) {
+    deleteAccount(e) {
       this.$axios
         .$delete("/accounts/" + e)
         .then(response => this.$store.dispatch("loadAccounts"));

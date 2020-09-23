@@ -5,6 +5,9 @@
         <span class="headline">Register</span>
       </v-card-title>
       <v-card-text>
+        <v-alert type="error" v-if="error">
+          {{ message }}
+        </v-alert>
         <v-container>
           <v-row>
             <v-col cols="12" sm="12" md="12">
@@ -39,7 +42,7 @@
         <v-btn color="blue darken-1" text @click="$router.push('/')"
           >Cancel</v-btn
         >
-        <v-btn color="blue darken-1" text @click.prevent="registerform()"
+        <v-btn color="blue darken-1" text @click.prevent="register()"
           >Register</v-btn
         >
       </v-card-actions>
@@ -52,7 +55,8 @@ export default {
   layout: "basic",
   data() {
     return {
-      error: {},
+      error: false,
+      message: "",
       registration: {
         name: "",
         email: "",
@@ -62,10 +66,16 @@ export default {
   },
 
   methods: {
-    registerform() {
+    register() {
       this.$axios
-        .$post("/register", this.registration)
-        .then(response => this.$router.push("/"));
+        .$post("/auth/register", this.registration)
+        .then(response => {
+          this.$router.push("/");
+        })
+        .catch(error => {
+          this.error = true;
+          this.message = error.response.data.errors.email[0];
+        });
     }
   }
 };
