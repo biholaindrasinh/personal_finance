@@ -12,7 +12,8 @@
           <v-container>
             <v-row>
               <v-col cols="12" sm="12" md="12">
-                <v-text-field label="Account name*" v-model="accounts.name" required></v-text-field>
+                <v-text-field label="Account name*" v-model="accounts.name"></v-text-field>
+                <span v-if="error" type="error">{{ message }}</span>
               </v-col>
             </v-row>
           </v-container>
@@ -32,6 +33,8 @@
     middleware: 'auth',
     data: () => ({
       accounts:[],
+      error: false,
+      message: "",
     }),
       methods: {
         onSave() {
@@ -40,6 +43,10 @@
               name: this.accounts.name
             })
             .then(response => (  this.$router.push('/account') ))
+             .catch(error => {
+              this.error = true;
+              this.message = error.response.data.errors.name[0];
+            });
            
         },
         getData() {

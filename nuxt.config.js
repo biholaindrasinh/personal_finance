@@ -71,11 +71,13 @@ export default {
             tokenType: 'Bearer'
           }
       },
+      rewriteRedirects: false,
       redirect: {
         login: '/',
         logout: '/',
         home: '/dashboard'
       },
+      watchLoggedIn: false
   },
   /*
   ** vuetify module configuration

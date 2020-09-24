@@ -5,8 +5,12 @@
         <v-list-item-title class="headline">Add Expense</v-list-item-title>
       </v-list-item-content>
     </v-list-item>
+
     <v-form @submit.prevent="onSave">
       <v-card-text>
+          <v-alert type="error" v-if="error">
+            {{ message }}
+          </v-alert>
         <v-select
           v-model="category"
           :items="categories"
@@ -76,7 +80,9 @@ export default {
     modal: false,
 
     categories: [],
-    accounts: []
+    accounts: [],
+    error: false,
+    message: "",
   }),
 
   methods: {
@@ -96,7 +102,11 @@ export default {
           transaction_type: "expense",
           description: "fgg"
         })
-        .then(response => this.$router.push("/transaction"));
+        .then(response => this.$router.push("/transaction"))
+        .catch(error => {
+          this.error = true;
+          this.message = error.response.data.message;
+        });
     },
 
     fetchAccount() {

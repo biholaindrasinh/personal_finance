@@ -7,6 +7,9 @@
     </v-list-item>
     <v-form @submit.prevent="onSave">
       <v-card-text>
+         <v-alert type="error" v-if="error">
+            {{ message }}
+          </v-alert>
         <v-select
           v-model="category"
           :items="categories"
@@ -69,6 +72,8 @@ export default {
   data: () => ({
     name: "",
     amount: "",
+    error: false,
+    message: "",
     category: null,
     account: null,
 
@@ -96,7 +101,11 @@ export default {
           transaction_type: "income",
           description: "fgg"
         })
-        .then(response => this.$router.push("/transaction"));
+        .then(response => this.$router.push("/transaction"))
+         .catch(error => {
+              this.error = true;
+              this.message = error.response.data.message;
+            });
     },
 
     fetchAccount() {
