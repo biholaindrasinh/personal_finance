@@ -29,6 +29,7 @@
               <td>{{ category.type == "income" ? "Income" : "Expense" }}</td>
               <td>
                 <v-btn
+                  small
                   class="ma-2"
                   outlined
                   color="indigo"
@@ -36,6 +37,7 @@
                   >Edit</v-btn
                 >
                 <v-btn
+                  small
                   class="ma-2"
                   outlined
                   color="indigo"

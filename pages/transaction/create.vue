@@ -124,13 +124,7 @@
 						v-on="on"
 						></v-text-field>
 					</template>
-					<v-date-picker v-model="date" scrollable>
-						<v-spacer></v-spacer>
-						<v-btn text color="primary" @click="modal = false">Cancel</v-btn>
-						<v-btn text color="primary" @click="$refs.dialog.save(date)"
-						>OK</v-btn
-						>
-					</v-date-picker>
+					<v-date-picker v-model="date" @input="$refs.dialog.save(date); modal = false"></v-date-picker>
 				</v-dialog>
 
 				

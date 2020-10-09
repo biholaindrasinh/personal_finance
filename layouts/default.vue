@@ -22,14 +22,13 @@
             <v-list-item-title v-text="item.title" />
           </v-list-item-content>
         </v-list-item>
-		<v-list-item link to="">
-		 	<v-list-item-action>
-            	<v-icon>mdi-chart-bubble</v-icon>
-          	</v-list-item-action>
-                <v-list-item-title @click="logout()">Logout</v-list-item-title>
-            </v-list-item>
-		</v-list>
-
+        <v-list-item link to="">
+          <v-list-item-action>
+            <v-icon>mdi-logout</v-icon>
+          </v-list-item-action>
+          <v-list-item-title @click="logout()">Logout</v-list-item-title>
+        </v-list-item>
+      </v-list>
     </v-navigation-drawer>
     <v-app-bar :clipped-left="clipped" fixed app>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
@@ -45,20 +44,18 @@
     <v-footer :absolute="!fixed" app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
     </v-footer>
-
   </v-app>
 </template>
 
 <script>
 export default {
-	 methods: {
+  methods: {
     async logout() {
-	  await this.$auth.logout();
-	  this.$router.push('/')
-    }
+      await this.$auth.logout();
+      this.$router.push("/");
+    },
   },
   data() {
-
     return {
       clipped: false,
       drawer: true,
@@ -67,33 +64,33 @@ export default {
         {
           icon: "mdi-apps",
           title: "Welcome",
-          to: ""
+          to: "",
         },
         {
-          icon: "mdi-chart-bubble",
+          icon: "mdi-gauge",
           title: "Dashboard",
-          to: "/dashboard"
+          to: "/dashboard",
         },
         {
-          icon: "mdi-chart-bubble",
+          icon: "mdi-account-box",
           title: "Account",
-          to: "/account"
+          to: "/account",
         },
         {
-          icon: "mdi-chart-bubble",
+          icon: "mdi-sitemap",
           title: "Category",
-          to: "/category"
+          to: "/category",
         },
         {
-          icon: "fas fa-sign-out-alt",
+          icon: "mdi-bank-transfer",
           title: "Transaction",
-          to: "/transaction"
-        }
+          to: "/transaction",
+        },
       ],
       miniVariant: false,
       right: true,
-      title: "Personal Finance"
+      title: "Personal Finance",
     };
-  }
+  },
 };
 </script>

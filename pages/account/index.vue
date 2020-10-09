@@ -22,7 +22,7 @@
             <td>{{ account.name }}</td>
             <td>
               <v-btn
-			  	small
+                small
                 class="ma-2"
                 outlined
                 color="indigo"
@@ -30,7 +30,7 @@
                 >Edit</v-btn
               >
               <v-btn
-			  	small
+                small
                 class="ma-2"
                 outlined
                 color="indigo"
@@ -49,22 +49,22 @@ export default {
   middleware: "auth",
   data: () => ({
     dialog: false,
-    name: ""
+    name: "",
   }),
   computed: {
     accounts() {
       return this.$store.state.accounts;
-    }
+    },
   },
   methods: {
     deleteAccount(e) {
       this.$axios
         .$delete("/accounts/" + e)
-        .then(response => this.$store.dispatch("loadAccounts"));
-    }
+        .then((response) => this.$store.dispatch("loadAccounts"));
+    },
   },
   created() {
     this.$store.dispatch("loadAccounts");
-  }
+  },
 };
 </script>
