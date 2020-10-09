@@ -1,184 +1,129 @@
 <template>
-  <v-row>
-    <v-col cols="6">
-      <v-card class="mx-auto" max-width="1000">
-        <v-list-item two-line>
-          <v-list-item-content>
-            <v-list-item-title class="headline">Income</v-list-item-title>
-          </v-list-item-content>
-          <v-list-item-action>
-            <v-btn to="transaction/createincome" color="warning" dark>
-              Add Income
-            </v-btn>
-          </v-list-item-action>
-        </v-list-item>
+	<div>
+		<v-card class="mx-auto mb-10"
+		max-width="900">
+			<v-tabs
+			v-model="tab"
+			centered
+			icons-and-text
+			
+		>
+     		<v-tabs-slider></v-tabs-slider>
 
-        <v-card-text>
-          <v-simple-table dense>
-            <thead>
-              <tr>
-                <th class="text-left">Date</th>
-                <th class="text-left">Category</th>
-                <th class="text-left">Description</th>
-                <th class="text-left">Amount</th>
-                <th class="text-left">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="transaction in transactions"
-                v-show="transaction.transaction_type == 'income'"
-                :key="transaction.id"
-              >
-                <td>{{ transaction.date }}</td>
-                <td>{{ transaction.category.name }}</td>
-                <td>{{ transaction.name }}</td>
-                <td>{{ transaction.amount }}</td>
-                <td style="white-space: nowrap">
-                  <v-btn
-                    class="ma-2"
-                    color="primary"
-                    :to="'transaction/' + transaction.id"
-                    fab
-                    small
-                    dark
-                  >
-                    <v-icon>mdi-pencil</v-icon>
-                  </v-btn>
-                  <v-btn
-                    class="ma-2"
-                    color="primary"
-                    fab
-                    small
-                    dark
-                    @click="deletedata(transaction.id)"
-                  >
-                    <v-icon>mdi-delete</v-icon>
-                  </v-btn>
-                </td>
-              </tr>
-            </tbody>
-          </v-simple-table>
-        </v-card-text>
-        <hr />
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <p class="text-lg-right text-xs-right">Total Income: {{ income }}</p>
-        </v-card-actions>
-      </v-card>
-    </v-col>
-    <v-col cols="6">
-      <v-card class="mx-auto" max-width="1000">
-        <v-list-item two-line>
-          <v-list-item-content>
-            <v-list-item-title class="headline">Expense</v-list-item-title>
-          </v-list-item-content>
-          <v-list-item-action>
-            <v-btn to="transaction/createexpense" color="warning" dark>
-              Add Expense
-            </v-btn>
-          </v-list-item-action>
-        </v-list-item>
+			<v-tab key="tab-1" href="#tab-1" @click="checktest('past')">
+				Past
+				<v-icon>mdi-arrow-left-bold</v-icon>
+			</v-tab>
 
-        <v-card-text>
-          <v-simple-table dense>
-            <thead>
-              <tr>
-                <th class="text-left">Date</th>
-                <th class="text-left">Category</th>
-                <th class="text-left">Description</th>
-                <th class="text-left">Amount</th>
-                <th class="text-left">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="transaction in transactions"
-                v-show="transaction.transaction_type == 'expense'"
-                :key="transaction.id"
-              >
-                <td>{{ transaction.date }}</td>
-                <td>{{ transaction.category.name }}</td>
-                <td>{{ transaction.name }}</td>
-                <td>{{ transaction.amount }}</td>
-                <td style="white-space: nowrap">
-                  <v-btn
-                    class="ma-2"
-                    color="primary"
-                    :to="'transaction/expense/' + transaction.id"
-                    fab
-                    small
-                    dark
-                  >
-                    <v-icon>mdi-pencil</v-icon>
-                  </v-btn>
-                  <v-btn
-                    class="ma-2"
-                    color="primary"
-                    fab
-                    small
-                    dark
-                    @click="deletedata(transaction.id)"
-                  >
-                    <v-icon>mdi-delete</v-icon>
-                  </v-btn>
-                </td>
-              </tr>
-            </tbody>
-          </v-simple-table>
-        </v-card-text>
-        <hr />
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <p class="text-lg-right text-xs-right">
-            Total Expense: {{ expense }}
-          </p>
-        </v-card-actions>
-      </v-card>
-    </v-col>
-  </v-row>
+			<v-tab key="tab-2" href="#tab-2" @click="checktest('current')">
+				This month
+				<v-icon>mdi-heart</v-icon>
+			</v-tab>
+
+			<v-tab key="tab-3" href="#tab-3" @click="checktest('future')">
+				Future
+				<v-icon>mdi-arrow-right-bold</v-icon>
+			</v-tab>
+    	</v-tabs>
+		<v-divider class="mb-10"></v-divider>
+		<v-card
+			class="mx-auto mb-10"
+			max-width="800"
+			v-for="transaction in transactions" :key="transaction.id"
+		>
+		
+		<v-card-text  >
+			<v-row align="center">
+				<v-col class="display-1" sm="1" cols="3">
+					{{  transaction.date }}
+				</v-col>
+				<v-col  sm="10" cols="6">
+					<v-list-item-title>{{  transaction.day }}</v-list-item-title>
+					<v-list-item-subtitle>{{ transaction.month_with_year }}</v-list-item-subtitle>
+				</v-col>
+				<v-col sm="1" cols="3">
+					<v-list-item-subtitle>{{  transaction.total }}</v-list-item-subtitle>
+				</v-col>
+			</v-row>
+			<v-divider></v-divider>
+			<v-row align="center" v-for="(detail , index) in transaction"
+					:key="detail.id" v-if="index != 'date' && index != 'day' && index != 'month_with_year' && index != 'total'" @click="check(detail.id)">
+
+				<v-col sm="1" cols="3">
+					<v-img
+						src="https://cdn.vuetifyjs.com/images/cards/sun.png"
+						alt="Sunny image"
+						width="50"
+					></v-img>
+				</v-col>
+				<v-col  sm="10" cols="6">
+					<v-list-item-title>{{ detail.category.name }}</v-list-item-title>
+				</v-col>
+				<v-col sm="1" cols="3">
+					<v-list-item-subtitle v-if="detail.transaction_type == 'income'" class="blue--text">{{ detail.amount }}</v-list-item-subtitle>
+					<v-list-item-subtitle v-else class="red--text">{{ detail.amount }}</v-list-item-subtitle>
+				</v-col>
+			</v-row>
+			
+		</v-card-text>
+	
+	
+
+  		</v-card>
+		<v-card-text style="height: 100px; position: relative">
+				<v-fab-transition>
+					<v-btn
+						color="pink"
+						dark
+						fixed
+						bottom
+						right
+						fab
+						to="transaction/create"
+					>
+						<v-icon>mdi-plus</v-icon>
+					</v-btn>
+				</v-fab-transition>
+			</v-card-text>
+		</v-card>
+	</div>
 </template>
 <script>
 export default {
   middleware: "auth",
   data: () => ({
+	  tab:'tab-2',
     expense: 0,
     income: 0,
-    total_transaction: []
+	total_transaction: [],
+	transactions: [],
   }),
   computed: {
-    transactions() {
-      return this.$store.state.transactions;
-    },
     user() {
       console.log(this.$auth.user);
       return this.$auth.user;
     }
   },
   methods: {
+	  checktest(data) {
+		  this.$axios
+			.$get("/transactions?type="+data)
+			.then(response => (this.transactions = response));
+	  },
+	  check( data) {
+		  this.$router.push("/transaction/"+data);
+	  },
     deletedata(e) {
       this.$axios
         .$delete("/transactions/" + e)
         .then(response => this.$store.dispatch("loadTransactions"));
     },
-    total_income() {
-      let income = 0;
-      let expense = 0;
-      this.total_transaction = this.$store.getters.getTransactions;
-      this.total_transaction.forEach(function(key, value) {
-        if (key.transaction_type == "expense") {
-          expense = expense + parseInt(key.amount);
-        } else {
-          income = income + parseInt(key.amount);
-        }
-      });
-      this.expense = expense;
-      this.income = income;
-    }
   },
   created() {
+	   this.$axios
+			.$get("/transactions?type=current")
+			.then(response => (this.transactions = response));
     this.$store.dispatch("loadTransactions");
-    this.total_income();
   }
 };
 </script>

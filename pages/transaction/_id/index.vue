@@ -1,76 +1,101 @@
 <template>
-  <v-card
-    class="mx-auto"
-    max-width="800"
-  >
-    <v-list-item two-line>
-      <v-list-item-content>
-        <v-list-item-title class="headline">Edit Income</v-list-item-title>
-      </v-list-item-content>
-    </v-list-item>
-    <v-form @submit.prevent="onSave">
-    <v-card-text>
-    <v-select
-      v-model="transactions.category_id" :items="categories" item-text="name" item-value="id"  label="Category" required></v-select>
-    <v-text-field  v-model="transactions.name" label="Description" required></v-text-field>
-     <v-dialog
-        ref="dialog"
-        v-model="modal"
-        :return-value.sync="transactions.date"
-        persistent
-        width="290px"
-      >
-        <template v-slot:activator="{ on, attrs }">
-          <v-text-field
-            v-model="transactions.date"
-            label="Date"
-            readonly
-            v-bind="attrs"
-            v-on="on"
-          ></v-text-field>
-        </template>
-        <v-date-picker v-model="date" scrollable>
-          <v-spacer></v-spacer>
-          <v-btn text color="primary" @click="modal = false">Cancel</v-btn>
-          <v-btn text color="primary" @click="$refs.dialog.save(date)">OK</v-btn>
-        </v-date-picker>
-      </v-dialog>
+	<v-card
+		class="mx-auto"
+		max-width="800"
+	>
+		<v-list-item two-line>
+		<v-list-item-content>
+			<v-list-item-title class="headline">Show Transaction</v-list-item-title>
+		</v-list-item-content>
+		<div class="text-center">
+			<v-btn class="mx-2" fab small :to="'edit/' + id">
+				<v-icon dark>
+					mdi-grease-pencil
+				</v-icon>
+			</v-btn>
+			<v-btn class="mx-2" fab small @click="deletedata(id)" >
+				<v-icon dark>
+					mdi-delete
+				</v-icon>
+			</v-btn>
+		</div>
+		
+		</v-list-item>
+		<v-divider></v-divider>
+		<v-list-item>
+			<v-list-item-title>Amount</v-list-item-title>
+			<v-list-item-subtitle class="text-right">
+			{{transactions.amount}}
+			</v-list-item-subtitle>
+		</v-list-item>
+		<v-list-item
+			>
+			<v-list-item-title>Category</v-list-item-title>
+			<v-list-item-subtitle class="text-right">
+			{{ category }}
+			</v-list-item-subtitle>
+		</v-list-item>
+		<v-list-item
+			>
+			<v-list-item-title>Description</v-list-item-title>
+			<v-list-item-subtitle class="text-right">
+			{{transactions.description}}
+			</v-list-item-subtitle>
+		</v-list-item>
+		<v-list-item
+			>
+			<v-list-item-title>Date</v-list-item-title>
+			<v-list-item-subtitle class="text-right">
+			{{transactions.date}}
+			</v-list-item-subtitle>
+		</v-list-item>
+		<v-list-item
+			>
+			<v-list-item-title>Account</v-list-item-title>
+			<v-list-item-subtitle class="text-right">
+			{{account}}
+			</v-list-item-subtitle>
+		</v-list-item>
+		
 
-    <v-text-field v-model="transactions.amount" label="Amount" required></v-text-field>
-    
-    <v-select v-model="transactions.account_id" :items="accounts" item-text="name" item-value="id"  label="Account" required></v-select>
-    
-    </v-card-text>
-    <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text type="submit">Save</v-btn>
-        </v-card-actions>
-  </v-form>
-  </v-card>
+		<v-divider></v-divider>
+
+	
+
+	</v-card>
 </template>
 <script>
   export default {
-     middleware: 'auth',
-    data: () => ({
-      name: '',
-      amount: '',   
-      category: null,
-      account:null,
-      income_expense:null,
+		middleware: 'auth',
+		data: () => ({
+		name: '',
+		amount: '',   
+		category: null,
+		account:null,
+		income_expense:null,
 
-      date: new Date().toISOString().substr(0, 10),
-      modal: false,
+		date: new Date().toISOString().substr(0, 10),
+		modal: false,
 
-      categories: [],
-      accounts: [],
-      transactions:[],
-    }),
+		categories: [],
+		accounts: [],
+		transactions:[],
+		id : null,
+	}),
+	mounted() {
+        this.id = this.$route.params.id;
+    },
 
-   methods: {
+   	methods: {
         onChange(event) {
              this.$axios.$get('/categories/transaction/income')
                 .then(response => (this.categories = response))
-        }, 
+		}, 
+		deletedata(e) {
+			this.$axios
+				.$delete("/transactions/" + e)
+				.then(response => this.$router.push('/transaction'));
+    	},
         onSave() {
           
             this.$axios.$put('/transactions/'+this.$route.params.id, {
@@ -88,7 +113,9 @@
         getData() {
             this.$axios.$get('/transactions/'+this.$route.params.id)
                 .then(response => {
-                    this.transactions = response;
+					this.transactions = response;
+					this.category = this.transactions.category.name
+					this.account = this.transactions.account.name
                     
                 })  
         },
