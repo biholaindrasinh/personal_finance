@@ -18,7 +18,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="account in accounts" :key="account.id">
+          <tr v-for="account in getAccounts" :key="account.id">
             <td>{{ account.name }}</td>
             <td>
               <v-btn
@@ -45,26 +45,20 @@
   </v-card>
 </template>
 <script>
+import { mapGetters, mapActions } from "vuex";
 export default {
   middleware: "auth",
   data: () => ({
     dialog: false,
-    name: "",
   }),
   computed: {
-    accounts() {
-      return this.$store.state.accounts;
-    },
+    ...mapGetters(["getAccounts"]),
   },
   methods: {
-    deleteAccount(e) {
-      this.$axios
-        .$delete("/accounts/" + e)
-        .then((response) => this.$store.dispatch("loadAccounts"));
-    },
+    ...mapActions(["loadAccounts", "deleteAccount"]),
   },
   created() {
-    this.$store.dispatch("loadAccounts");
+    this.loadAccounts();
   },
 };
 </script>
