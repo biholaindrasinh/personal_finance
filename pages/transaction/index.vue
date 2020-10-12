@@ -1,22 +1,28 @@
 <template>
 	<div>
 		<v-card class="mx-auto mb-10" max-width="800">
-			<v-tabs v-model="tab" centered icons-and-text>
+			<v-tabs v-model="tab" centered icons-and-text >
 				<v-tabs-slider></v-tabs-slider>
-
-				<v-tab key="tab-1" href="#tab-1" @click="checktest('past')">
-					Past
-					<v-icon>mdi-arrow-left-bold</v-icon>
+				<v-tab
+					v-for="item in months"
+					:key="item.months"
+					@click="GetDataAccordingToMonth(item.months)"
+				>
+        		{{ item.months }}
+				</v-tab>
+				<v-tab key="tab-1" href="#tab-1" @click="getData('past')">
+					Last month
+					
 				</v-tab>
 
-				<v-tab key="tab-2" href="#tab-2" @click="checktest('current')">
+				<v-tab key="tab-2" href="#tab-2" @click="getData('current')">
 					This month
-					<v-icon>mdi-heart</v-icon>
+					
 				</v-tab>
 
-				<v-tab key="tab-3" href="#tab-3" @click="checktest('future')">
+				<v-tab key="tab-3" href="#tab-3" @click="getData('future')">
 					Future
-					<v-icon>mdi-arrow-right-bold</v-icon>
+					
 				</v-tab>
 			</v-tabs>
 			<v-divider class="mb-10"></v-divider>
@@ -32,6 +38,8 @@
 						</v-row>
 					</v-expansion-panel-header>
 					<v-expansion-panel-content>
+						<v-divider></v-divider>
+						<a>
 						<v-row
 							align="center"
 							v-for="(detail, index) in transaction"
@@ -69,6 +77,7 @@
 								>
 							</v-col>
 						</v-row>
+						</a>
 					</v-expansion-panel-content>
 				</v-expansion-panel>
 			</v-expansion-panels>
@@ -95,11 +104,29 @@ export default {
 	middleware: "auth",
 	data: () => ({
 		tab: "tab-2",
+        items: [
+          { tab: 'One', content: 'Tab 1 Content' },
+          { tab: 'Two', content: 'Tab 2 Content' },
+          { tab: 'Three', content: 'Tab 3 Content' },
+          { tab: 'Four', content: 'Tab 4 Content' },
+          { tab: 'Five', content: 'Tab 5 Content' },
+          { tab: 'Six', content: 'Tab 6 Content' },
+          { tab: 'Seven', content: 'Tab 7 Content' },
+          { tab: 'Eight', content: 'Tab 8 Content' },
+          { tab: 'Nine', content: 'Tab 9 Content' },
+          { tab: 'Ten', content: 'Tab 10 Content' },
+        ],
 		expense: 0,
 		income: 0,
 		total_transaction: [],
 		transactions: [],
+		months: [],
 	}),
+	async fetch() {
+      this.posts = await this.$axios
+				.$get("/getalltransactionmonth")
+				.then((response) => (this.months = response));
+    },
 	computed: {
 		user() {
 			console.log(this.$auth.user);
@@ -107,9 +134,14 @@ export default {
 		},
 	},
 	methods: {
-		checktest(data) {
+		getData(data) {
 			this.$axios
 				.$get("/transactions?type=" + data)
+				.then((response) => (this.transactions = response));
+		},
+		GetDataAccordingToMonth(month) {
+			this.$axios
+				.$get("/transactions?type=" + month)
 				.then((response) => (this.transactions = response));
 		},
 		check(data) {
