@@ -28,7 +28,7 @@
 			<v-divider class="mb-10"></v-divider>
 			<v-expansion-panels class="pl-5 pr-5">
 				<v-expansion-panel
-					v-for="transaction in transactions"
+					v-for="transaction in getTransactions"
 					:key="transaction.id"
 				>
 					<v-expansion-panel-header class="pt-0 pb-0">
@@ -100,26 +100,14 @@
 	</div>
 </template>
 <script>
+import { mapGetters, mapActions } from "vuex";
 export default {
 	middleware: "auth",
 	data: () => ({
 		tab: "tab-2",
-        items: [
-          { tab: 'One', content: 'Tab 1 Content' },
-          { tab: 'Two', content: 'Tab 2 Content' },
-          { tab: 'Three', content: 'Tab 3 Content' },
-          { tab: 'Four', content: 'Tab 4 Content' },
-          { tab: 'Five', content: 'Tab 5 Content' },
-          { tab: 'Six', content: 'Tab 6 Content' },
-          { tab: 'Seven', content: 'Tab 7 Content' },
-          { tab: 'Eight', content: 'Tab 8 Content' },
-          { tab: 'Nine', content: 'Tab 9 Content' },
-          { tab: 'Ten', content: 'Tab 10 Content' },
-        ],
 		expense: 0,
 		income: 0,
 		total_transaction: [],
-		transactions: [],
 		months: [],
 	}),
 	async fetch() {
@@ -132,17 +120,16 @@ export default {
 			console.log(this.$auth.user);
 			return this.$auth.user;
 		},
+		...mapGetters([
+			"getTransactions"
+		])
 	},
 	methods: {
 		getData(data) {
-			this.$axios
-				.$get("/transactions?type=" + data)
-				.then((response) => (this.transactions = response));
+			this.loadTransactions(data);
 		},
 		GetDataAccordingToMonth(month) {
-			this.$axios
-				.$get("/transactions?type=" + month)
-				.then((response) => (this.transactions = response));
+			this.loadTransactions(month);
 		},
 		check(data) {
 			this.$router.push("/transaction/" + data);
@@ -152,12 +139,12 @@ export default {
 				.$delete("/transactions/" + e)
 				.then((response) => this.$store.dispatch("loadTransactions"));
 		},
+		...mapActions([
+			"loadTransactions"
+		])
 	},
 	created() {
-		this.$axios
-			.$get("/transactions?type=current")
-			.then((response) => (this.transactions = response));
-		this.$store.dispatch("loadTransactions");
+		this.loadTransactions('current');
 	},
 };
 </script>
