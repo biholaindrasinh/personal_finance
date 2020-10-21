@@ -11,6 +11,7 @@ export const getters = {
   getAccount: (state) => state.account,
   getAccounts: (state) => state.accounts,
   getTransactions: (state) => state.transactions,
+  getCategories: (state) => state.categories,
 };
 
 export const mutations = {
@@ -55,9 +56,19 @@ export const actions = {
     const categories = await this.$axios.$get("/categories");
     commit("SET_CATEGORIES", categories);
   },
+  async deleteCategory({ commit, dispatch }, id) {
+    this.$axios
+      .$delete("/categories/" + id)
+      .then((response) => dispatch("loadCategories"));
+  },
   async loadTransactions({ commit }, month) {
     const transactions = await this.$axios.$get("/transactions?type=" + month);
     commit("SET_TRANSACTIONS", transactions);
+  },
+  async deleteTransaction({ commit, dispatch }, id) {
+    this.$axios
+      .$delete("/transactions/" + id)
+      .then((response) => dispatch("loadTransactions"));
   },
 };
 

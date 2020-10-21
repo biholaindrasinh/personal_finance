@@ -23,7 +23,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="category in categories" :key="category.id">
+            <tr v-for="category in getCategories" :key="category.id">
               <td>{{ category.id }}</td>
               <td>{{ category.name }}</td>
               <td>{{ category.type == "income" ? "Income" : "Expense" }}</td>
@@ -41,7 +41,7 @@
                   class="ma-2"
                   outlined
                   color="indigo"
-                  @click="deletedata(category.id)"
+                  @click="deleteCategory(category.id)"
                   >Delete</v-btn
                 >
               </td>
@@ -53,6 +53,7 @@
   </v-card>
 </template>
 <script>
+import { mapGetters, mapActions } from "vuex";
 import CategoryList from "~/components/category/CategoryList";
 export default {
   middleware: "auth",
@@ -66,25 +67,18 @@ export default {
     CategoryList
   },
   computed: {
-    categories() {
-      return this.$store.state.categories;
-    }
+    ...mapGetters([
+      'getCategories'
+    ])
   },
   methods: {
-    deletedata(e) {
-      this.$axios
-        .$delete("/categories/" + e)
-        .then(response => this.$store.dispatch("loadCategories"));
-    },
-
-    getData() {
-      this.$axios
-        .$get("/categories")
-        .then(response => (this.categories = response));
-    }
+    ...mapActions([
+      'loadCategories',
+      'deleteCategory'
+    ])
   },
   created() {
-    this.$store.dispatch("loadCategories");
+    this.loadCategories();
   }
 };
 </script>
