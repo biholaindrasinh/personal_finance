@@ -60,7 +60,6 @@
 											v-if="category.type == 'income'"
 										>
 											<v-list-item-icon>
-												{{ i }}
 												<v-icon
 													v-text="categories.name"
 												></v-icon>
@@ -117,7 +116,7 @@
 					</v-card>
 				</v-dialog>
 				<v-text-field
-					v-model="transaction.name"
+					v-model="transaction.description"
 					label="Description"
 					required
 				></v-text-field>
@@ -200,7 +199,7 @@ export default {
 		},
 		onChange(event) {
 			this.$axios
-				.$get("/categories/transaction/expense")
+				.$get("/categories")
 				.then((response) => (this.categories = response));
 		},
 		onSave() {
@@ -216,28 +215,30 @@ export default {
 				})
 				.then((response) => this.$router.push("/transaction"));
 		},
-		getData() {
-			this.$axios
-				.$get("/transaction/" + this.$route.params.edit)
-				.then((response) => {
-					this.transaction = response;
-				});
-		},
-		fetchCategory() {
-			this.$axios
-				.$get("/categories/transactions/expense")
-				.then((response) => (this.categories = response));
-		},
-		fetchAccount() {
+		getAccounts() {
 			this.$axios
 				.$get("/accounts")
 				.then((response) => (this.accounts = response));
 		},
+		getCategories() {
+			this.$axios
+				.$get("/categories")
+				.then((response) => (this.categories = response));
+		},
+		getTransaction() {
+			this.$axios
+				.$get("/transactions/" + this.$route.params.edit)
+				.then((response) => {
+					this.transaction = response;
+					this.category = response.category.id;
+					this.categoryname = response.category.name;
+				});
+		},
 	},
 	created() {
-		this.fetchCategory();
-		this.getData();
-		this.fetchAccount();
+		this.getAccounts();
+		this.getCategories();
+		this.getTransaction();
 	},
 };
 </script>
