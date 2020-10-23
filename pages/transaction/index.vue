@@ -10,19 +10,16 @@
 				>
         		{{ item.months }}
 				</v-tab>
-				<v-tab key="tab-1" href="#tab-1" @click="getTransactions('past')">
+				<v-tab key="tab-1" href="#tab-1" @click="getTransactionsAccordingToMonth('past')">
 					Last month
-					
 				</v-tab>
 
-				<v-tab key="tab-2" href="#tab-2" @click="getTransactions('current')">
+				<v-tab key="tab-2" href="#tab-2" @click="getTransactionsAccordingToMonth('current')">
 					This month
-					
 				</v-tab>
 
-				<v-tab key="tab-3" href="#tab-3" @click="getTransactions('future')">
+				<v-tab key="tab-3" href="#tab-3" @click="getTransactionsAccordingToMonth('future')">
 					Future
-					
 				</v-tab>
 			</v-tabs>
 			<v-divider class="mb-10"></v-divider>
@@ -130,7 +127,7 @@ export default {
 		deleteTransaction(e) {
 			this.$axios
 				.$delete("/transactions/" + e)
-				.then((response) => this.$store.dispatch("loadTransactions"));
+				.then((response) => this.loadTransactions('current'));
 		},
 		...mapActions([
 			"loadTransactions"
