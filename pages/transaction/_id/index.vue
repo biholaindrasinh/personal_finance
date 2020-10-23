@@ -12,7 +12,7 @@
 						mdi-grease-pencil
 					</v-icon>
 				</v-btn>
-				<v-btn class="mx-2" fab small @click="deleteTransaction(id)">
+				<v-btn class="mx-2" fab small @click="deleteTransaction($route.params.id)">
 					<v-icon dark>
 						mdi-delete
 					</v-icon>
@@ -57,12 +57,8 @@ export default {
 	middleware: "auth",
 	data() {
 		return {
-			id: null,
-			name: "",
-			amount: "",
 			category: null,
 			account: null,
-			income_expense: null,
 			date: new Date().toISOString().substr(0, 10),
 			modal: false,
 			transaction: [],
