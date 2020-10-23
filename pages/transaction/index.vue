@@ -6,21 +6,21 @@
 				<v-tab
 					v-for="item in months"
 					:key="item.months"
-					@click="GetDataAccordingToMonth(item.months)"
+					@click="getTransactionsAccordingToMonth(item.months)"
 				>
         		{{ item.months }}
 				</v-tab>
-				<v-tab key="tab-1" href="#tab-1" @click="getData('past')">
+				<v-tab key="tab-1" href="#tab-1" @click="getTransactions('past')">
 					Last month
 					
 				</v-tab>
 
-				<v-tab key="tab-2" href="#tab-2" @click="getData('current')">
+				<v-tab key="tab-2" href="#tab-2" @click="getTransactions('current')">
 					This month
 					
 				</v-tab>
 
-				<v-tab key="tab-3" href="#tab-3" @click="getData('future')">
+				<v-tab key="tab-3" href="#tab-3" @click="getTransactions('future')">
 					Future
 					
 				</v-tab>
@@ -110,31 +110,24 @@ export default {
 		total_transaction: [],
 		months: [],
 	}),
-	async fetch() {
-      this.posts = await this.$axios
-				.$get("/getalltransactionmonth")
-				.then((response) => (this.months = response));
-    },
 	computed: {
-		user() {
-			console.log(this.$auth.user);
-			return this.$auth.user;
-		},
 		...mapGetters([
 			"getTransactions"
 		])
 	},
 	methods: {
-		getData(data) {
-			this.loadTransactions(data);
-		},
-		GetDataAccordingToMonth(month) {
+		getTransactionsAccordingToMonth(month) {
 			this.loadTransactions(month);
+		},
+		async getAllMonths() {
+      		await this.$axios
+				.$get("/getalltransactionmonth")
+				.then((response) => (this.months = response));
 		},
 		check(data) {
 			this.$router.push("/transaction/" + data);
 		},
-		deletedata(e) {
+		deleteTransaction(e) {
 			this.$axios
 				.$delete("/transactions/" + e)
 				.then((response) => this.$store.dispatch("loadTransactions"));
@@ -144,6 +137,7 @@ export default {
 		])
 	},
 	created() {
+		this.getAllMonths();
 		this.loadTransactions('current');
 	},
 };

@@ -1,11 +1,11 @@
 import Vuex from "vuex";
 
-export const state = {
+export const state = () => ({
   account: {},
   accounts: [],
   categories: [],
   transactions: [],
-};
+});
 
 export const getters = {
   getAccount: (state) => state.account,

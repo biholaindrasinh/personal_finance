@@ -25,7 +25,7 @@
 				>
 					<template v-slot:activator="{ on, attrs }">
 						<v-text-field
-							v-model="categoryname"
+							v-model="category_name"
 							label="Category"
 							readonly
 							v-bind="attrs"
@@ -76,7 +76,8 @@
 													@click="
 														setCategory(
 															category.id,
-															category.name
+															category.name,
+															category.type
 														)
 													"
 												></v-list-item-title>
@@ -105,7 +106,8 @@
 													@click="
 														setCategory(
 															category.id,
-															category.name
+															category.name,
+															category.type
 														)
 													"
 												></v-list-item-title>
@@ -118,7 +120,7 @@
 					</v-card>
 				</v-dialog>
 				<v-text-field
-					v-model="name"
+					v-model="description"
 					label="Description"
 					required
 				></v-text-field>
@@ -148,7 +150,7 @@
 				</v-dialog>
 
 				<v-select
-					v-model="account"
+					v-model="account_id"
 					:items="accounts"
 					item-text="name"
 					item-value="id"
@@ -168,14 +170,15 @@ export default {
 	middleware: "auth",
 	data: () => ({
 		category_model: false,
-		categoryname: null,
+		category_id: null,
+		category_name: null,
+		category_type: null,
 		tabs: "",
-		name: "",
+		description: "",
 		amount: "",
 		error: false,
 		message: "",
-		category: null,
-		account: null,
+		account_id: null,
 
 		date: new Date().toISOString().substr(0, 10),
 		modal: false,
@@ -185,10 +188,11 @@ export default {
 	}),
 
 	methods: {
-		setCategory(id, name) {
-			this.categoryname = name;
-			this.category = id;
+		setCategory(id, name, type) {
 			this.category_model = false;
+			this.category_id = id;
+			this.category_name = name;
+			this.category_type = type;
 		},
 		getCategories() {
 			this.$axios
@@ -198,13 +202,12 @@ export default {
 		onSave() {
 			this.$axios
 				.$post("/transactions", {
-					name: this.name,
+					category_id: this.category_id,
 					date: this.date,
 					amount: this.amount,
-					category: this.category,
-					account: this.account,
-					transaction_type: "income",
-					description: "fgg",
+					account_id: this.account_id,
+					transaction_type: this.category_type,
+					description: this.description,
 				})
 				.then((response) => this.$router.push("/transaction"))
 				.catch((error) => {

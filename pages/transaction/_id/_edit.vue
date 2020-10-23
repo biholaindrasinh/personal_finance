@@ -17,7 +17,7 @@
 				>
 					<template v-slot:activator="{ on, attrs }">
 						<v-text-field
-							v-model="categoryname"
+							v-model="category_name"
 							label="Category"
 							readonly
 							v-bind="attrs"
@@ -71,7 +71,8 @@
 													@click="
 														setCategory(
 															category.id,
-															category.name
+															category.name,
+															category.type
 														)
 													"
 												></v-list-item-title>
@@ -103,7 +104,8 @@
 													@click="
 														setCategory(
 															category.id,
-															category.name
+															category.name,
+															category.type
 														)
 													"
 												></v-list-item-title>
@@ -171,11 +173,13 @@
 export default {
 	middleware: "auth",
 	data: () => ({
-		name: "",
 		amount: "",
-		category: null,
+		category_model: false,
+		category_id: null,
+		category_name: null,
+		category_type: null,
 		item: null,
-		account: null,
+		account_id: null,
 		income_expense: null,
 
 		date: new Date().toISOString().substr(0, 10),
@@ -184,18 +188,17 @@ export default {
 		categories: [],
 		accounts: [],
 		transaction: [],
-		category_model: false,
-		categoryname: null,
 		tabs: "",
 		income_item: null,
 		expense_item: null,
 	}),
 
 	methods: {
-		setCategory(id, name) {
-			this.categoryname = name;
-			this.category = id;
+		setCategory(id, name, type) {
 			this.category_model = false;
+			this.category_id = id;
+			this.category_name = name;
+			this.category_type = type;
 		},
 		onChange(event) {
 			this.$axios
@@ -204,14 +207,13 @@ export default {
 		},
 		onSave() {
 			this.$axios
-				.$put("/transaction/" + this.$route.params.edit, {
-					name: this.transaction.name,
+				.$put("/transactions/" + this.$route.params.edit, {
+					category_id: this.category_id,
 					date: this.transaction.date,
 					amount: this.transaction.amount,
-					category: this.category,
-					account: this.transaction.account_id,
-					transaction_type: "expense",
-					description: "fff",
+					account_id: this.transaction.account_id,
+					transaction_type: this.category_type,
+					description: this.transaction.description,
 				})
 				.then((response) => this.$router.push("/transaction"));
 		},
@@ -230,8 +232,9 @@ export default {
 				.$get("/transactions/" + this.$route.params.edit)
 				.then((response) => {
 					this.transaction = response;
-					this.category = response.category.id;
-					this.categoryname = response.category.name;
+					this.category_id = response.category.id;
+					this.category_name = response.category.name;
+					this.category_type = response.category.type;
 				});
 		},
 	},
