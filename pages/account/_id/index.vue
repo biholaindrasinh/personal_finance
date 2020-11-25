@@ -2,7 +2,7 @@
   <v-card class="mx-auto" max-width="400">
     <form>
       <v-card-title>
-        <span class="headline">Account Edit</span>
+        <span class="headline">Edit Account</span>
       </v-card-title>
       <v-card-text>
         <v-container>
@@ -20,7 +20,7 @@
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="editAccount()">Save</v-btn>
+        <v-btn color="blue darken-1" text @click="onUpdate()">Save</v-btn>
       </v-card-actions>
     </form>
   </v-card>
@@ -40,12 +40,11 @@ export default {
   },
   methods: {
     ...mapActions([
-      "loadAccount"
+      "loadAccount",
+      "updateAccount"
     ]),
-    editAccount() {
-      const id = this.$route.params.id;
-      const account = { id, ...this.getAccount };
-      this.$store.dispatch("editAccount", account).then(() => {
+    onUpdate() {
+      this.updateAccount().then(() => {
         this.$router.push("/account")
       }).catch((error) => {
           this.error = true;
@@ -56,7 +55,7 @@ export default {
       this.$store.commit('SET_ACCOUNT_NAME', e)
     }
   },
-  created() {
+  mounted() {
     this.loadAccount(this.$route.params.id);
   },
 };

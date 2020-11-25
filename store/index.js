@@ -33,15 +33,18 @@ export const mutations = {
 };
 
 export const actions = {
-  async editAccount({ commit }, account) {
-    return this.$axios.$put("/accounts/" + account.id, {
-      name: account.name,
+  async updateAccount({ commit, state }) {
+    const index = state.accounts.indexOf(state.account)
+    let accounts = state.accounts;
+    accounts[index] = state.account;
+    commit('SET_ACCOUNTS', accounts);
+    return this.$axios.$put("/accounts/" + state.account.id, {
+      name: state.account.name,
     });
   },
-  async loadAccount({ commit }, id) {
-    this.$axios
-      .$get("/accounts/" + id)
-      .then((response) => commit("SET_ACCOUNT", response));
+  loadAccount({ commit, state }, id) {
+    const account = state.accounts.find(account => account.id == id)
+    commit("SET_ACCOUNT", account);
   },
   async loadAccounts({ commit }) {
     const accounts = await this.$axios.$get("/accounts");
