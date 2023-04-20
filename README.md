@@ -1,7 +1,7 @@
 # Personal Finance
 This is a simple nuxt application to manage your finances.
 
-[Demo](https://personal-finance-demo.herokuapp.com)
+[Demo](https://pfinance.panimtechnology.com/)
 
 [Backend Server Repository](https://github.com/biholaindrasinh/pf_api)
 
