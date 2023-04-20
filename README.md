@@ -3,7 +3,7 @@ This is a simple nuxt 2 application to manage your finances.
 
 [Demo](https://pfinance.panimtechnology.com/)
 
-[Backend Server Repository](https://github.com/biholaindrasinh/pf_api)
+[API Repository](https://github.com/biholaindrasinh/pf_api)
 
 ### Build Setup
 
