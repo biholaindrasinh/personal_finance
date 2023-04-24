@@ -1,6 +1,12 @@
 # Personal Finance
 This is a simple nuxt 2 application to manage your finances.
 
+### Features:
+
+   * Manage Accounts
+   * Manage Categories
+   * Manage Transactions
+
 [Demo](https://pfinance.panimtechnology.com/)
 
 Email: admin@admin.com
