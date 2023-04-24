@@ -10,6 +10,7 @@ This is a simple nuxt 2 application to manage your finances.
 [Demo](https://pfinance.panimtechnology.com/)
 
 Email: admin@admin.com
+
 Password: password
 
 [API Repository](https://github.com/biholaindrasinh/pf_api)
